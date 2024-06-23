@@ -12,7 +12,8 @@ export default defineConfig({
     base: './',
     resolve: {
         alias: {
-            '@': resolve(__dirname, './src/')
+            '@': resolve(__dirname, './src/'),
+            'packages': resolve(__dirname, './packages')
         },
         extensions: ['.js', '.vue']
     },

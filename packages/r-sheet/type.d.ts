@@ -1,0 +1,6 @@
+
+
+
+declare class SheetPlugin {
+
+}

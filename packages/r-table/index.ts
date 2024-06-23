@@ -3,7 +3,7 @@ const defaultOptions: RTableOption = {
     // 行高
     rowHeight: 30,
     // 边框颜色
-    borderColor: 'green'
+    borderColor: '#dfdfdf'
 }
 
 export default class RTable {
@@ -44,13 +44,13 @@ export default class RTable {
                         colIndex === 0
                             ? 0
                             : columnWidth.reduce((acc, cur, curIndex) => {
-                                  if (curIndex < colIndex) {
-                                      // 前面的列宽相加
-                                      return acc + cur
-                                  } else {
-                                      return acc
-                                  }
-                              }, 0)
+                                if (curIndex < colIndex) {
+                                    // 前面的列宽相加
+                                    return acc + cur
+                                } else {
+                                    return acc
+                                }
+                            }, 0)
                     const cellY = rowIndex * rowHeight
                     // 列宽
                     const cellWidth = columnWidth[colIndex]
@@ -58,12 +58,47 @@ export default class RTable {
                     const cellHeight = rowHeight
 
                     // ==============   边框绘制(切换横竖线绘制，边框绘制会重叠) ====
-                    // 设置画笔颜色
+                    // // 设置画笔颜色
+                    // ctx.strokeStyle = borderColor
+                    // // 设置线的宽度
+                    // ctx.lineWidth = .5
+                    // // 绘制一个矩形框
+                    // ctx.strokeRect(cellX, cellY, cellWidth, cellHeight)
+
+                    // 只绘制右边框和下边框
+
+                    // 比如说你定义x坐标为1，绘制竖线；它会以1为中心，左边分0.5像素、右边分0.5像素，但是渲染时又不支持0.5像素，所以会绘制成1px，左右各1px，就成了2px；并且颜色变模糊
+                    // 解决方法： 
+                    // 方法1: 所有这里先缩小0.5，然后恢复绘制
+                    // ctx.save();
+                    // ctx.translate(0.5, 0.5);
+                    // ctx.restore();
+
+
+                    // 方法2: 把 x 的值加或者减0.5像素，这样它就可以完整渲染1像素了(就会减少一边的1px的绘制)
+                    // ctx.moveTo(cellX, cellY + cellHeight - 0.5)
+                    // ctx.lineTo(cellX + cellWidth, cellY + cellHeight - 0.5)
+
+
+
+                    // 下边框
+                    ctx.beginPath()
+                    ctx.moveTo(cellX, cellY + cellHeight - 0.5)
+                    ctx.lineTo(cellX + cellWidth, cellY + cellHeight - 0.5)
+                    ctx.lineWidth = 1
                     ctx.strokeStyle = borderColor
-                    // 设置线的宽度
-                    ctx.lineWidth = .5
-                    // 绘制一个矩形框
-                    ctx.strokeRect(cellX, cellY, cellWidth, cellHeight)
+                    ctx.stroke()
+                    ctx.closePath()
+
+                    // 右边框
+                    ctx.beginPath()
+                    ctx.moveTo(cellX + cellWidth - 0.5, cellY)
+                    ctx.lineTo(cellX + cellWidth - 0.5, cellY + cellHeight)
+                    ctx.lineWidth = 1
+                    ctx.strokeStyle = 'red'
+                    ctx.stroke()
+                    ctx.closePath()
+
 
                     // =============   文本绘制
                     // 文本颜色
@@ -76,12 +111,15 @@ export default class RTable {
         }
     }
     // 屏幕放大缩小，重绘
-    redraw() {}
+    redraw() { }
     _initEl() {
         if (!this._el) {
+            const { borderColor } = this._options
+
             const canvas = document.createElement('canvas')
             canvas.width = this._containerEl.clientWidth
             canvas.height = this._containerEl.clientHeight
+            canvas.style.border = `1px solid ${borderColor}`
             this._containerEl.appendChild(canvas)
 
             this._el = canvas

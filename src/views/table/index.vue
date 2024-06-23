@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import RTable from '@/components/table/index.ts'
+import RTable from 'packages/r-table/index.ts'
 export default {
     data() {
         return {}
