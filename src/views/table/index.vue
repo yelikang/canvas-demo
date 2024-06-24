@@ -1,5 +1,7 @@
 <template>
-    <div class="RTable" ref="RTable"></div>
+    <div class="RTable">
+        <div ref="RTable" class="RTable__container"></div>
+    </div>
 </template>
 
 <script>
@@ -11,7 +13,23 @@ export default {
     mounted() {
         const rTable = new RTable({
             containerEl: this.$refs.RTable,
-            options: {}
+            options: {
+                columns: [
+                    {
+                        title: '姓名',
+                        key: 'name',
+                        width: 200
+                    },
+                    {
+                        title: '年龄',
+                        key: 'age'
+                    },
+                    {
+                        title: '工作',
+                        key: 'worker'
+                    }
+                ]
+            }
         })
         const array = [
             {
@@ -57,5 +75,10 @@ export default {
 .RTable {
     width: 100%;
     height: 100%;
+    padding: 10px 20px;
+    &__container {
+        height: 200px;
+        width: 500px;
+    }
 }
 </style>
