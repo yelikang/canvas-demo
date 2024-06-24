@@ -18,7 +18,7 @@ export default {
                     {
                         title: '姓名',
                         key: 'name',
-                        width: 200
+                        width: 'auto'
                     },
                     {
                         title: '年龄',
@@ -33,7 +33,7 @@ export default {
         })
         const array = [
             {
-                name: '张三',
+                name: '张三666666666',
                 age: 20
             },
             {

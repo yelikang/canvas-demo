@@ -43,7 +43,7 @@ export default class RenderHeaderPlugin extends Plugin {
                 // 文本颜色
                 canvas.fillStyle = '#000'
                 // 字体样式
-                canvas.font = '12px Arial'
+                canvas.font = '14px Arial'
                 canvas.fillText(text, x + 5, y + height / 2 + 5)
             })
         }

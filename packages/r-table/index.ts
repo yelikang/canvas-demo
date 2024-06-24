@@ -5,8 +5,6 @@ import Store from './store'
 import Plugin from './plugins'
 import { PluginContext, RTableOption, RTableParams } from './type'
 
-
-
 export default class RTable {
     _containerEl: HTMLElement
     _canvas: Canvas

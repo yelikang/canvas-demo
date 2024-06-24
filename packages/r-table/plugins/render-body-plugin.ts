@@ -65,7 +65,7 @@ export default class RenderBodyPluin extends Plugin {
         // 数据(实际应该用可视区域数据)
         const datas = this.store.getData()
         // 列头
-        const columns = this.store.getColumns()
+        const columns = this.store.getColumns(this.canvas)
 
         const options = this.store.getOptions()
         const { defaultRowHeight, defaultCellWidth } = options
@@ -80,6 +80,12 @@ export default class RenderBodyPluin extends Plugin {
                 const cellY = (rowIndex + 1) * defaultRowHeight
 
                 // 列宽(根据用户传入的列宽信息、剩余列自适应计算列宽)
+                // 1.自适应(内容自适应) + 默认列宽
+                // 2.用户传入列宽
+                // a. 不传入宽度，使用默认宽度，计算当前能显示多少个列
+                // b. 传入宽度，设置最小宽度，计算剩余列宽
+                // c. 根据文字内容，计算宽度
+                // d. 超出显示...，不换行
                 const colWidth = width || defaultCellWidth
 
                 totolWidth = totolWidth + colWidth

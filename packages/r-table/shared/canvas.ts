@@ -43,11 +43,30 @@ export default class Canvas {
     private get context() {
         return this._canvasEl.getContext('2d')
     }
+    /**
+     * 测量文本宽度
+     * @param text 
+     * @returns 
+     */
+    measureText(text:string):number{
+        return this.context?.measureText(text).width || 0
+    }
+    /**
+     * 填充图形
+     * @param x 
+     * @param y 
+     * @param width 
+     * @param height 
+     */
     fillRect(x, y, width, height) {
         this.context?.fillRect(x, y, width, height)
     }
 
-    // 画水平线
+    /**
+     * 画水平线
+     * @param startPoint 
+     * @param endPoint 
+     */
     renderHorLine(startPoint: Point, endPoint: Point) {
         if (this.context) {
             this.context.beginPath()
@@ -58,7 +77,11 @@ export default class Canvas {
             this.context.closePath()
         }
     }
-    // 画垂直线
+    /**
+     * 画垂直线
+     * @param startPoint 
+     * @param endPoint 
+     */
     renderVerLine(startPoint: Point, endPoint: Point) {
         if (this.context) {
             this.context.beginPath()
@@ -69,13 +92,20 @@ export default class Canvas {
             this.context.closePath()
         }
     }
-    // 绘制文字
+    /**
+     * 绘制文字
+     * @param text 
+     * @param x 
+     * @param y 
+     */
     fillText(text: string, x: number, y: number) {
         if (this.context) {
             this.context.fillText(text, x, y)
         }
     }
-    // 清空画布
+    /**
+     * 清空画布
+     */
     clear() {
         this.context?.clearRect(0, 0, this.width, this.height)
     }
