@@ -1,13 +1,11 @@
 import RenderHeaderPlugin from './plugins/render-header-plugin'
 import RenderBodyPlugin from './plugins/render-body-plugin'
-import Canvas from './shared/canvas'
 import Store from './store'
 import Plugin from './plugins'
 import { PluginContext, RTableOption, RTableParams } from './type'
 
 export default class RTable {
     _containerEl: HTMLElement
-    _canvas: Canvas
     _store = new Store()
     _plugins: Array<Plugin> = []
     constructor(_params: RTableParams) {
@@ -22,24 +20,19 @@ export default class RTable {
     // 屏幕放大缩小，重绘
     redraw() {}
     _init() {
-        if (!this._canvas) {
-            const width = this._containerEl.clientWidth
-            const height = this._containerEl.clientHeight
+        const width = this._containerEl.clientWidth
+        const height = this._containerEl.clientHeight
 
-            const canvas = new Canvas()
-            canvas.setSize({ width, height })
-            this._canvas = canvas
+        this._store.setSize({ width, height })
 
-            this._containerEl.appendChild(canvas.element)
+        this._containerEl.appendChild(this._store._canvas.element)
 
-            this.registerPlugin(RenderBodyPlugin)
-            this.registerPlugin(RenderHeaderPlugin)
-        }
+        this.registerPlugin(RenderBodyPlugin)
+        this.registerPlugin(RenderHeaderPlugin)
     }
 
     registerPlugin(_PluginCtor: any) {
         const context: PluginContext = {
-            canvas: this._canvas,
             store: this._store
         }
         const pluginInstance = new _PluginCtor(context)

@@ -16,7 +16,7 @@ export default {
             options: {
                 columns: [
                     {
-                        title: '姓名',
+                        title: '姓名姓名姓名姓名姓名姓名6',
                         key: 'name',
                         width: 'auto'
                     },

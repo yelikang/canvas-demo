@@ -7,7 +7,7 @@ export default class RenderHeaderPlugin extends Plugin {
     override apply() {
         const canvas: Canvas = this.canvas
         if (canvas) {
-            const { headerBg } = this.store.getOptions()
+            const { headerBg } = this.options
 
             const cells = this._assembleCells()
             cells.forEach((cell) => {
@@ -43,7 +43,7 @@ export default class RenderHeaderPlugin extends Plugin {
                 // 文本颜色
                 canvas.fillStyle = '#000'
                 // 字体样式
-                canvas.font = '14px Arial'
+                canvas.font = '12px Arial'
                 canvas.fillText(text, x + 5, y + height / 2 + 5)
             })
         }
@@ -56,9 +56,9 @@ export default class RenderHeaderPlugin extends Plugin {
     private _assembleCells(): Array<Cell> {
         const cells: Array<Cell> = []
         // 列头
-        const columns = this.store.getColumns()
+        const columns = this.columns
 
-        const options = this.store.getOptions()
+        const options = this.options
         const { defaultRowHeight, defaultCellWidth } = options
         let totolWidth = 0
         columns?.forEach((column) => {

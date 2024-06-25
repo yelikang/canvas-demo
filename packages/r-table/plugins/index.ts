@@ -6,12 +6,18 @@ export default class Plugin {
     }
 
     get canvas() {
-        return this._context.canvas
-    }
-    get store() {
-        return this._context.store
+        return this._context.store.getCanvas()
     }
 
+    get options(){
+        return this._context.store.getOptions()
+    }
+    get datas(){
+        return this._context.store.getData()
+    }
+    get columns(){
+        return this._context.store.getColumns()
+    }
     apply(){
         throw Error(`Abstract method apply. Must be overridden.`)
     }

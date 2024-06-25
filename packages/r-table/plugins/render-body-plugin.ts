@@ -11,7 +11,7 @@ export default class RenderBodyPluin extends Plugin {
             const width = canvas.width
             const height = canvas.height
 
-            const { bg, borderColor } = this.store.getOptions()
+            const { bg, borderColor } = this.options
             // 清空画布
             canvas.clear()
             // 填充背景颜色
@@ -63,11 +63,11 @@ export default class RenderBodyPluin extends Plugin {
     private _assembleCells(): Array<Cell> {
         const cells: Array<Cell> = []
         // 数据(实际应该用可视区域数据)
-        const datas = this.store.getData()
+        const datas = this.datas
         // 列头
-        const columns = this.store.getColumns(this.canvas)
+        const columns = this.columns
 
-        const options = this.store.getOptions()
+        const options = this.options
         const { defaultRowHeight, defaultCellWidth } = options
         datas.forEach((row, rowIndex) => {
             let totolWidth = 0

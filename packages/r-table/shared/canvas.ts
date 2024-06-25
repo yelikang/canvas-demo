@@ -45,18 +45,25 @@ export default class Canvas {
     }
     /**
      * 测量文本宽度
-     * @param text 
-     * @returns 
+     * @param text
+     * @returns
      */
-    measureText(text:string):number{
-        return this.context?.measureText(text).width || 0
+    measureText(text: string, font: string = '12px Arial'): number {
+        if (this.context) {
+            this.context?.save()
+            this.context.font = font
+            const width = this.context.measureText(text).width || 0
+            this.context.restore()
+            return width
+        }
+        return 0
     }
     /**
      * 填充图形
-     * @param x 
-     * @param y 
-     * @param width 
-     * @param height 
+     * @param x
+     * @param y
+     * @param width
+     * @param height
      */
     fillRect(x, y, width, height) {
         this.context?.fillRect(x, y, width, height)
@@ -64,8 +71,8 @@ export default class Canvas {
 
     /**
      * 画水平线
-     * @param startPoint 
-     * @param endPoint 
+     * @param startPoint
+     * @param endPoint
      */
     renderHorLine(startPoint: Point, endPoint: Point) {
         if (this.context) {
@@ -79,8 +86,8 @@ export default class Canvas {
     }
     /**
      * 画垂直线
-     * @param startPoint 
-     * @param endPoint 
+     * @param startPoint
+     * @param endPoint
      */
     renderVerLine(startPoint: Point, endPoint: Point) {
         if (this.context) {
@@ -94,9 +101,9 @@ export default class Canvas {
     }
     /**
      * 绘制文字
-     * @param text 
-     * @param x 
-     * @param y 
+     * @param text
+     * @param x
+     * @param y
      */
     fillText(text: string, x: number, y: number) {
         if (this.context) {

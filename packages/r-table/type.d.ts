@@ -22,7 +22,6 @@ type Point = {
 
 // 插件上下文
 type PluginContext = {
-    canvas: Canvas
     store: Store
 }
 
