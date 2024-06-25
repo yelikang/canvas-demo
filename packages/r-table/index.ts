@@ -6,17 +6,19 @@ import { PluginContext, RTableOption, RTableParams } from './type'
 
 export default class RTable {
     _containerEl: HTMLElement
-    _store = new Store()
+    _store:Store
     _plugins: Array<Plugin> = []
     constructor(_params: RTableParams) {
         const { containerEl, options } = _params
         this._containerEl = containerEl
         const { clientWidth, clientHeight } = containerEl
+        const store = new Store()
 
-        this._store.setSize({ width: clientWidth, height: clientHeight })
-        this._containerEl.appendChild(this._store._canvas.element)
+        store.setOptions(options)
+        store.setSize({ width: clientWidth, height: clientHeight })
+        this._containerEl.appendChild(store._canvas.element)
 
-        this._store.setOptions(options)
+        this._store = store
     }
     setData(_data: Array<any>) {
         this._store.setData(_data)
