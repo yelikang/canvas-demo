@@ -12,9 +12,8 @@ export default class RTable {
         const { containerEl, options } = _params
         this._containerEl = containerEl
         const { clientWidth, clientHeight } = containerEl
-        const store = new Store()
+        const store = new Store(options)
 
-        store.setOptions(options)
         store.setSize({ width: clientWidth, height: clientHeight })
         this._containerEl.appendChild(store._canvas.element)
 

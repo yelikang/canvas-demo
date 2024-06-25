@@ -21,7 +21,9 @@ export default class Store {
     _canvas = new Canvas()
     _width: number
     _height: number
-    constructor() {}
+    constructor(_options: RTableOption) {
+        this._options = Object.assign({}, defaultOptions, _options)
+    }
     setSize({ width, height }) {
         this._width = width
         this._height = height
@@ -56,7 +58,8 @@ export default class Store {
                             }
                         })
                         // 文字前面偏移了5px、后面再偏移5px
-                        col.width = this._canvas.measureText(maxWidthText) + 5 + 5
+                        col.width =
+                            this._canvas.measureText(maxWidthText) + 5 + 5
                         break
                     default:
                         break
@@ -78,9 +81,6 @@ export default class Store {
         //   tableData.length
         // );
         // 或者计算可视区域能容显示多少条数据   起始+条数
-    }
-    setOptions(_options: RTableOption) {
-        this._options = Object.assign({}, defaultOptions, _options)
     }
     getOptions() {
         return this._options
