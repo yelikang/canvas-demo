@@ -11,22 +11,20 @@ export default class RTable {
     constructor(_params: RTableParams) {
         const { containerEl, options } = _params
         this._containerEl = containerEl
+        const { clientWidth, clientHeight } = containerEl
+
+        this._store.setSize({ width: clientWidth, height: clientHeight })
+        this._containerEl.appendChild(this._store._canvas.element)
+
         this._store.setOptions(options)
     }
     setData(_data: Array<any>) {
         this._store.setData(_data)
-        this._init()
+        this._initPlugin()
     }
     // 屏幕放大缩小，重绘
     redraw() {}
-    _init() {
-        const width = this._containerEl.clientWidth
-        const height = this._containerEl.clientHeight
-
-        this._store.setSize({ width, height })
-
-        this._containerEl.appendChild(this._store._canvas.element)
-
+    _initPlugin() {
         this.registerPlugin(RenderBodyPlugin)
         this.registerPlugin(RenderHeaderPlugin)
     }
