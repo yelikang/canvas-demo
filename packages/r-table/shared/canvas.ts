@@ -21,19 +21,25 @@ export default class Canvas {
     get height() {
         return this._height
     }
-    // 填充颜色/文本颜色
+    /**
+     * 填充颜色/文本颜色
+     */
     set fillStyle(val: string) {
         if (this.context) {
             this.context.fillStyle = val
         }
     }
-    // 画笔颜色
+    /**
+     * 画笔颜色
+     */
     set strokeStyle(val: string) {
         if (this.context) {
             this.context.strokeStyle = val
         }
     }
-    // 字体样式
+    /**
+     * 字体样式
+     */
     set font(val: string) {
         if (this.context) {
             this.context.font = val
@@ -48,7 +54,7 @@ export default class Canvas {
      * @param text
      * @returns
      */
-    measureText(text: string, font: string = '12px Arial'): number {
+    measureText(text: string, font: string = '14px Arial'): number {
         if (this.context) {
             this.context?.save()
             this.context.font = font

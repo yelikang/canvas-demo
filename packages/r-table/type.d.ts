@@ -1,18 +1,16 @@
+import RTableEvent from './event'
 import Canvas from './shared/canvas'
 import Store from './store'
 
 type RTableOption = {
+    containerEl: HTMLCanvasElement // 渲染在哪个元素中
     bg: string // 背景色
     headerBg: string // 表头背景色
     defaultRowHeight: number // 行高
     borderColor: string
     columns?: [] // 列信息
     defaultCellWidth: number // 单元格宽度
-}
-
-type RTableParams = {
-    containerEl: HTMLCanvasElement // 渲染在哪个元素中
-    options: RTableOption // 其它参数
+    scrollbarWidth: number // 滚动条宽度
 }
 
 type Point = {
@@ -23,6 +21,7 @@ type Point = {
 // 插件上下文
 type PluginContext = {
     store: Store
+    event: RTableEvent
 }
 
 // 单元格

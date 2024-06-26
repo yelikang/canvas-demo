@@ -2,90 +2,147 @@ import RTable from '..'
 import Canvas from '../shared/canvas'
 import { RTableOption } from '../type'
 
-const defaultOptions: RTableOption = {
+const defaultOptions = {
     bg: '#fff',
     headerBg: '#ecf1f5',
     // 行高
-    defaultRowHeight: 30,
+    defaultRowHeight: 40,
     // 边框颜色
     borderColor: '#dfdfdf',
     // 单元格宽度
-    defaultCellWidth: 80
+    defaultCellWidth: 80,
+    scrollbarWidth: 15
 }
 
 export default class Store {
     _datas: Array<any> = []
     _columns: Array<any> = []
     _options: RTableOption
-    _hasCompute = false
     _canvas = new Canvas()
-    _width: number
-    _height: number
+    // 可视区域宽高
+    _viewSize = {
+        width: 0,
+        height: 0
+    }
+    // 实际宽高
+    _fullSize = {
+        width: 0,
+        height: 0
+    }
+    // canvas包裹元素
+    _containerEl: HTMLElement
+    // 滚动数据
+    _scroll = { x: 0, y: 0 }
     constructor(_options: RTableOption) {
         this._options = Object.assign({}, defaultOptions, _options)
+
+        // canvas挂载
+        const { containerEl } = this._options
+        this._containerEl = containerEl
+        this._containerEl.style.position = 'relative'
+        const { clientWidth, clientHeight } = containerEl
+        this.setSize({ width: clientWidth, height: clientHeight })
+        this._containerEl.appendChild(this._canvas.element)
     }
     setSize({ width, height }) {
-        this._width = width
-        this._height = height
+        const { scrollbarWidth } = this._options
+        // 减去滚动条尺寸
+        width = width - scrollbarWidth
+        height = height - scrollbarWidth
+
+        this._viewSize = {
+            width,
+            height
+        }
+
         this._canvas.setSize({ width, height })
     }
     setData(_datas: Array<any>) {
+        const { defaultRowHeight } = this._options
+
         this._datas = _datas
+        this._computeWidth()
+
+        // 实际整体宽高
+        this._fullSize = {
+            width: 0,
+            // 数据高度 + 头部高度
+            height: this._datas.length * defaultRowHeight + defaultRowHeight
+        }
+    }
+    /**
+     * 设置滚动条信息
+     */
+    setScroll(_scroll: { x: number; y: number }) {
+        this._scroll = _scroll
     }
     getData() {
-        return this._datas
+        // return this._datas
+        return this._getViewData()
     }
     getColumns() {
-        // 计算列宽
-        if (!this._hasCompute) {
-            const { defaultCellWidth } = this._options
-            this._options.columns?.forEach((col: any) => {
-                const { width, title, key } = col
-                switch (width) {
-                    case undefined:
-                        // 未指定宽度，设置为默认宽度
-                        col.width = defaultCellWidth
-                        break
-                    case 'auto':
-                        // 自适应列(获取当前列最宽内容)
-                        let maxWidthText = title
-                        this._datas.forEach((row) => {
-                            if (
-                                this._canvas.measureText(row[key]) >
-                                this._canvas.measureText(maxWidthText)
-                            ) {
-                                maxWidthText = row[key]
-                            }
-                        })
-                        // 文字前面偏移了5px、后面再偏移5px
-                        col.width =
-                            this._canvas.measureText(maxWidthText) + 5 + 5
-                        break
-                    default:
-                        break
-                }
-            })
-            this._hasCompute = true
-        }
-
         return this._options.columns
     }
+    /**
+     * 获取当前表格的包裹元素
+     * @returns
+     */
+    getContainerEl() {
+        return this._containerEl
+    }
+    getViewSize(){
+        return this._viewSize
+    }
+
+    getFullSize() {
+        return this._fullSize
+    }
     // 获取可视区域数据(滚动加载)
-    getViewData() {
-        //  可视数据计算
-        // 起始行 向上滚动条距离/ 每个单元格高度  向下取整 = 滚动了多少行
-        // var startY = Math.floor(scroll.y / cellHeight);
-        // 结束行  (滚动条高度+视口高度) / 每个单元格高度 向上取整
-        // var endY = Math.min(
-        //   Math.ceil((scroll.y + viewportHeight) / cellHeight),
-        //   tableData.length
-        // );
-        // 或者计算可视区域能容显示多少条数据   起始+条数
+    _getViewData() {
+        const { defaultRowHeight } = this._options
+        const { height } = this._viewSize
+        const startRow = Math.floor(this._scroll.y / defaultRowHeight)
+
+        const endRow = Math.ceil((this._scroll.y + height) / defaultRowHeight)
+
+        const viewData = this._datas.slice(startRow, endRow)
+
+        return viewData
     }
     getOptions() {
         return this._options
     }
     getCanvas(): Canvas {
         return this._canvas
+    }
+    /**
+     * 计算列宽
+     */
+    _computeWidth() {
+        const { defaultCellWidth } = this._options
+        const measureText = this._canvas.measureText.bind(this._canvas)
+        this._options.columns?.forEach((col: any) => {
+            const { width, title, key } = col
+            switch (width) {
+                case undefined:
+                    // 未指定宽度，设置为默认宽度
+                    col.width = defaultCellWidth
+                    break
+                case 'auto':
+                    // 自适应列(获取当前列最宽内容)
+                    let maxWidthText = title
+                    this._datas.forEach((row) => {
+                        if (measureText(row[key]) > measureText(maxWidthText)) {
+                            maxWidthText = row[key]
+                        }
+                    })
+                    // 文字前面偏移了5px、后面再偏移5px
+                    col.width = measureText(maxWidthText) + 5 + 5
+                    break
+                default:
+                    col.width = +width
+                    break
+            }
+        })
     }
 }

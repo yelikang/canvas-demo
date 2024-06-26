@@ -13,58 +13,36 @@ export default {
     mounted() {
         const rTable = new RTable({
             containerEl: this.$refs.RTable,
-            options: {
-                columns: [
-                    {
-                        title: '姓名姓名姓名姓名姓名姓名6',
-                        key: 'name',
-                        width: 'auto'
-                    },
-                    {
-                        title: '年龄',
-                        key: 'age'
-                    },
-                    {
-                        title: '工作',
-                        key: 'worker'
-                    }
-                ]
-            }
+            columns: [
+                {
+                    title: '姓名姓名姓名姓名姓名姓名6',
+                    key: 'name',
+                    width: 'auto'
+                },
+                {
+                    title: '年龄',
+                    key: 'age'
+                },
+                {
+                    title: '工作',
+                    key: 'worker',
+                    width: '200'
+                }
+            ]
         })
-        const array = [
-            {
-                name: '张三666666666',
-                age: 20
-            },
-            {
-                name: '李四',
-                age: 25
-            },
-            {
-                name: '张三',
-                age: 20
-            },
-            {
-                name: '李四',
-                age: 25
-            },
-            {
-                name: '张三',
-                age: 20
-            },
-            {
-                name: '李四',
-                age: 25
-            },
-            {
-                name: '张三',
-                age: 20
-            },
-            {
-                name: '李四',
-                age: 25
+
+        function generateRecords(num) {
+            const records = []
+            for (let i = 0; i < num; i++) {
+                records.push({
+                    name: `张三${i}`,
+                    age: i,
+                    worker: `coder ${i}`
+                })
             }
-        ]
+            return records
+        }
+        const array = generateRecords(20)
 
         rTable.setData(array)
     }
@@ -77,7 +55,7 @@ export default {
     height: 100%;
     padding: 10px 20px;
     &__container {
-        height: 200px;
+        height: 280px;
         width: 500px;
     }
 }
