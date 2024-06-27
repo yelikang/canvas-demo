@@ -7,6 +7,10 @@ export default class Canvas {
     constructor() {
         this._canvasEl = document.createElement('canvas')
         this._canvasEl.style.border = `1px solid #dfdfdf`
+
+        this._canvasEl.oncontextmenu = (e) => {
+            e.preventDefault()
+        }
     }
     setSize({ width, height }) {
         this._canvasEl.width = this._width = width

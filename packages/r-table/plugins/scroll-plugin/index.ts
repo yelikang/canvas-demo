@@ -9,50 +9,31 @@ export default class ScrollPlugin extends Plugin {
     _vm: any
     override apply() {
         if (!this._vm) {
-            const { scrollbarWidth } = this.options
             const { width, height } = this.fullSize
 
             const RenderConstructor = Vue.extend(View)
             this._vm = new RenderConstructor({
                 el: document.createElement('div'),
                 propsData: {
-                    width: scrollbarWidth,
                     fullWidth: width,
-                    fullHeight: height,
-                    scroll: {
-                        x: 0,
-                        y: 0
-                    }
+                    fullHeight: height
                 },
                 methods: {
-                    $_onScrollY: debounce(this._scrollY.bind(this)),
-                    $_onScrollX: debounce(this._scrollX.bind(this))
+                    $_onScroll: debounce(this._scroll.bind(this))
                 }
             })
 
             this.containerEl.appendChild(this._vm.$el)
         }
     }
-    _scrollY(_event: Event) {
+    _scroll(_event: Event) {
         const target = _event.target as HTMLElement
-        const { scrollTop } = target
+        const { scrollTop, scrollLeft } = target
         this.eventBus.emit(CustomEvent.SCROLLBAR, {
-            y: scrollTop
-        })
-    }
-    _scrollX(_event: Event) {
-        const target = _event.target as HTMLElement
-        const { scrollLeft } = target
-        this.eventBus.emit(CustomEvent.SCROLLBAR, {
+            y: scrollTop,
             x: scrollLeft
         })
     }
-    update() {
-        const { x, y } = this.scrollSize
 
-        this._vm.scroll = {
-            x,
-            y
-        }
-    }
+    update() {}
 }

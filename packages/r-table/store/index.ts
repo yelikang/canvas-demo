@@ -40,6 +40,7 @@ export default class Store {
         const { containerEl } = this._options
         this._containerEl = containerEl
         this._containerEl.style.position = 'relative'
+
         this.setSize()
         this._containerEl.appendChild(this._canvas.element)
     }

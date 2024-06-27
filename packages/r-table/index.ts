@@ -6,7 +6,6 @@ import ScrollPlugin from './plugins/scroll-plugin'
 import { PluginContext, RTableOption } from './type'
 import RTableEvent, { CustomEvent } from './event'
 import { noop } from './shared/utils'
-import WheelPlugin from './plugins/wheel-plugin'
 import ResizePlugin from './plugins/resize-plugin'
 
 export default class RTable {
@@ -17,11 +16,9 @@ export default class RTable {
     constructor(_options: RTableOption) {
         this._store = new Store(_options)
         this._scrollBar = this._scrollBar.bind(this)
-        this._scrollWheel = this._scrollWheel.bind(this)
         this._resize = this._resize.bind(this)
 
         this._event.on(CustomEvent.SCROLLBAR, this._scrollBar)
-        this._event.on(CustomEvent.SCROLLWHEEL, this._scrollWheel)
         this._event.on(CustomEvent.RESIZE, this._resize)
     }
     setData(_data: Array<any>) {
@@ -36,7 +33,6 @@ export default class RTable {
         // TODO: 根据不同的生命周期注册不同的插件(或者不同插件注册不同声明周期事件)
         this.registerPlugin(RenderPlugin)
         this.registerPlugin(ScrollPlugin)
-        this.registerPlugin(WheelPlugin)
         this.registerPlugin(ResizePlugin)
     }
 
@@ -57,15 +53,6 @@ export default class RTable {
         this._store.setScroll(position)
         // 重新绘制
         this.redraw()
-        // 设置滚轮位置
-        this.getPlugin('WheelPlugin').update()
-    }
-    _scrollWheel(position) {
-        this._store.setScroll(position)
-        // 重新绘制
-        this.redraw()
-        // 设置滚动条位置
-        this.getPlugin('ScrollPlugin').update()
     }
     _resize() {
         this._store.setSize()
