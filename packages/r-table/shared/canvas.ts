@@ -126,4 +126,38 @@ export default class Canvas {
     clear() {
         this.context?.clearRect(0, 0, this.width, this.height)
     }
+    ellipsis = '...'
+    /**
+     * 文本缩略
+     */
+    text2Ellipsis(text: string, maxWidth: number) {
+        // 缩略符号长度
+        const ellipsisLength = this.ellipsis.length
+
+        // 先计算最大宽度下的最大文本内容
+        let maxStr = ''
+        let maxStrWidth = 0
+        const textLength = text.length
+        let i = 0
+        while (i < textLength && maxStrWidth < maxWidth) {
+            i++
+            maxStr = text.substring(0, i)
+            maxStrWidth = this.measureText(maxStr)
+        }
+
+        if (i === textLength && maxStrWidth <= maxWidth) {
+            // 如果循环到了最后一个字符，并且长度还是小于等于最大长度，直接返回
+            return maxStr
+        } else {
+            // 需要缩略，再加载缩略符下的最大内容...
+            while (maxStrWidth + ellipsisLength > maxWidth) {
+                // 往后减
+                maxStr = maxStr.substring(0, i)
+                maxStrWidth = this.measureText(maxStr)
+                i--
+            }
+
+            return maxStr.substring(0, i) + this.ellipsis
+        }
+    }
 }

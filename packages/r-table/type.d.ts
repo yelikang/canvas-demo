@@ -10,6 +10,7 @@ type RTableOption = {
     borderColor: string
     columns?: [] // 列信息
     defaultCellWidth: number // 单元格宽度
+    paddingWidth:number // 文字左右间距
 }
 
 type Point = {

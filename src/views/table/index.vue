@@ -21,7 +21,7 @@ export default {
                 },
                 {
                     title: '年龄',
-                    key: 'age'
+                    key: 'age',
                 },
                 {
                     title: '工作',
@@ -31,7 +31,7 @@ export default {
                 {
                     title: '备注',
                     key: 'remark',
-                    width: '800'
+                    width: 'auto'
                 }
             ]
         })
@@ -48,7 +48,7 @@ export default {
             }
             return records
         }
-        const array = generateRecords(200)
+        const array = generateRecords(2000)
         this.rTable.setData(array)
     },
     destroyed() {

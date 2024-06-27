@@ -54,7 +54,10 @@ export default class RenderPlugin extends Plugin {
                 // 计算单元格起始位置
                 const cellX = totolWidth - scrollSize.x
                 // 行理论上的高度位置 + 表头高度 - 减去滚动距离
-                const cellY = (row.rowIndex ) * defaultRowHeight + defaultRowHeight - scrollSize.y
+                const cellY =
+                    row.rowIndex * defaultRowHeight +
+                    defaultRowHeight -
+                    scrollSize.y
 
                 // 列宽(根据用户传入的列宽信息、剩余列自适应计算列宽)
                 // 1.自适应(内容自适应) + 默认列宽
@@ -100,13 +103,14 @@ export default class RenderPlugin extends Plugin {
     }
 
     private _renderCell(_cell: Cell) {
+        const { paddingWidth } = this.options
         const canvas: Canvas = this.canvas
 
         let { x, y, width, height, text } = _cell
 
         // 背景填充为白色
         canvas.fillStyle = '#fff'
-        canvas.fillRect(x,y, width, height)
+        canvas.fillRect(x, y, width, height)
 
         // 下边框
         const startPoint = {
@@ -137,16 +141,9 @@ export default class RenderPlugin extends Plugin {
         // 字体样式
         canvas.font = '14px Arial'
 
-        // 内容超过宽度
-        if (canvas.measureText(text) > width) {
-            while (canvas.measureText(text) > width) {
-                text = text.substring(0, text.length - 1)
-            }
-            // 截取掉两个字符，使用...替换
-            text = text.substring(0, text.length - 2)
-            text = text + '...'
-        }
+        // 内容超过宽度(减去2倍的文字左右间距，才是文本能显示的实际区域)
+        text = canvas.text2Ellipsis('' + text, width - paddingWidth * 2)
 
-        canvas.fillText(text, x + 5, y + height / 2 + 5)
+        canvas.fillText(text, x + paddingWidth, y + height / 2 + paddingWidth)
     }
 }

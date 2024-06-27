@@ -10,7 +10,8 @@ const defaultOptions = {
     // 边框颜色
     borderColor: '#dfdfdf',
     // 单元格宽度
-    defaultCellWidth: 80
+    defaultCellWidth: 80,
+    paddingWidth:5
 }
 
 export default class Store {
@@ -135,7 +136,7 @@ export default class Store {
      * 计算列宽
      */
     _computeWidth() {
-        const { defaultCellWidth } = this._options
+        const { defaultCellWidth, paddingWidth } = this._options
         const measureText = this._canvas.measureText.bind(this._canvas)
         this._options.columns?.forEach((col: any) => {
             const { width, title, key } = col
@@ -152,8 +153,8 @@ export default class Store {
                             maxWidthText = row[key]
                         }
                     })
-                    // 文字前面偏移了5px、后面再偏移5px
-                    col.width = measureText(maxWidthText) + 5 + 5
+                    // 文字前后偏移
+                    col.width = measureText(maxWidthText) + paddingWidth * 2
                     break
                 default:
                     col.width = +width
