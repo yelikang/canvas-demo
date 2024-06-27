@@ -53,8 +53,8 @@ export default class Store {
 
         const { scrollbarWidth } = this._options
         // 减去滚动条尺寸
-        width = width - scrollbarWidth
-        height = height - scrollbarWidth
+        // width = width - scrollbarWidth
+        // height = height - scrollbarWidth
 
         this._viewSize = {
             width,
