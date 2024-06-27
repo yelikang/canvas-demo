@@ -10,8 +10,7 @@ const defaultOptions = {
     // 边框颜色
     borderColor: '#dfdfdf',
     // 单元格宽度
-    defaultCellWidth: 80,
-    scrollbarWidth: 15
+    defaultCellWidth: 80
 }
 
 export default class Store {
@@ -51,10 +50,6 @@ export default class Store {
         let width = this._containerEl.clientWidth
         let height = this._containerEl.clientHeight
 
-        const { scrollbarWidth } = this._options
-        // 减去滚动条尺寸
-        // width = width - scrollbarWidth
-        // height = height - scrollbarWidth
 
         this._viewSize = {
             width,

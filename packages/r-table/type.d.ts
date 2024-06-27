@@ -10,7 +10,6 @@ type RTableOption = {
     borderColor: string
     columns?: [] // 列信息
     defaultCellWidth: number // 单元格宽度
-    scrollbarWidth: number // 滚动条宽度
 }
 
 type Point = {
