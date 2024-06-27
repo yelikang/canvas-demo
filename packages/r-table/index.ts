@@ -19,7 +19,7 @@ export default class RTable {
         this._scrollBar = this._scrollBar.bind(this)
         this._scrollWheel = this._scrollWheel.bind(this)
         this._resize = this._resize.bind(this)
-        
+
         this._event.on(CustomEvent.SCROLLBAR, this._scrollBar)
         this._event.on(CustomEvent.SCROLLWHEEL, this._scrollWheel)
         this._event.on(CustomEvent.RESIZE, this._resize)
@@ -67,8 +67,13 @@ export default class RTable {
         // 设置滚动条位置
         this.getPlugin('ScrollPlugin').update()
     }
-    _resize(){
+    _resize() {
         this._store.setSize()
         this.redraw()
+    }
+    destroy() {
+        this._plugins.forEach((_plugin) => {
+            _plugin.destroy && _plugin.destroy()
+        })
     }
 }

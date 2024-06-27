@@ -4,6 +4,9 @@
             <li>
                 <a href="#/table">表格</a>
             </li>
+            <li>
+                <a href="#/select">下拉框</a>
+            </li>
         </ul>
 
         <div>

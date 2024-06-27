@@ -11,7 +11,7 @@ export default {
         return {}
     },
     mounted() {
-        const rTable = new RTable({
+        this.rTable = new RTable({
             containerEl: this.$refs.RTable,
             columns: [
                 {
@@ -31,7 +31,7 @@ export default {
                 {
                     title: '备注',
                     key: 'remark',
-                    width: '200'
+                    width: '800'
                 }
             ]
         })
@@ -49,7 +49,10 @@ export default {
             return records
         }
         const array = generateRecords(200)
-        rTable.setData(array)
+        this.rTable.setData(array)
+    },
+    destroyed() {
+        this.rTable.destroy()
     }
 }
 </script>

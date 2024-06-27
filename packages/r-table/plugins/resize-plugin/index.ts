@@ -5,16 +5,17 @@ import { CustomEvent } from '../../event'
 export default class ResizePlugin extends Plugin {
     _resizeObserver: ResizeObserver
     override apply() {
-        this._resizeObserver = new ResizeObserver(this._resize.bind(this))
-        this._resizeObserver.observe(this.containerEl)
+        // this._resizeObserver = new ResizeObserver(this._resize.bind(this))
+        // this._resizeObserver.observe(this.containerEl)
 
-        // window.addEventListener('resize', this._resize.bind(this))
+        this._resize = this._resize.bind(this)
+        window.addEventListener('resize', this._resize.bind(this))
     }
     _resize(_event: any) {
         this.eventBus.emit(CustomEvent.RESIZE)
     }
     update() {}
     destroy() {
-        this._resizeObserver.unobserve(this.containerEl)
+        window.removeEventListener('resize', this._resize)
     }
 }

@@ -12,6 +12,10 @@ export default new Router({
         {
             path: '/table',
             component: () => import('@/views/table/index.vue')
+        },
+        {
+            path: '/select',
+            component: () => import('@/views/select/index.vue')
         }
     ]
 })

@@ -57,6 +57,5 @@ export default class Plugin {
         throw Error(`Abstract method update. Must be overridden.`)
     }
     destroy(){
-        throw Error(`Abstract method destroy. Must be overridden.`)
     }
 }
