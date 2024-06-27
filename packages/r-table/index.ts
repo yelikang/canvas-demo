@@ -7,6 +7,7 @@ import { PluginContext, RTableOption } from './type'
 import RTableEvent, { CustomEvent } from './event'
 import { noop } from './shared/utils'
 import WheelPlugin from './plugins/wheel-plugin'
+import ResizePlugin from './plugins/resize-plugin'
 
 export default class RTable {
     _containerEl: HTMLElement
@@ -17,8 +18,11 @@ export default class RTable {
         this._store = new Store(_options)
         this._scrollBar = this._scrollBar.bind(this)
         this._scrollWheel = this._scrollWheel.bind(this)
+        this._resize = this._resize.bind(this)
+        
         this._event.on(CustomEvent.SCROLLBAR, this._scrollBar)
         this._event.on(CustomEvent.SCROLLWHEEL, this._scrollWheel)
+        this._event.on(CustomEvent.RESIZE, this._resize)
     }
     setData(_data: Array<any>) {
         this._store.setData(_data)
@@ -33,6 +37,7 @@ export default class RTable {
         this.registerPlugin(RenderPlugin)
         this.registerPlugin(ScrollPlugin)
         this.registerPlugin(WheelPlugin)
+        this.registerPlugin(ResizePlugin)
     }
 
     registerPlugin(_PluginCtor: any) {
@@ -49,17 +54,21 @@ export default class RTable {
         return this._plugins.get(_pluginName) || { apply: noop, update: noop }
     }
     _scrollBar(position) {
-        const { scrollTop } = position
-        this._store.setScroll({ x: 0, y: scrollTop })
+        this._store.setScroll(position)
         // 重新绘制
         this.redraw()
+        // 设置滚轮位置
+        this.getPlugin('WheelPlugin').update()
     }
     _scrollWheel(position) {
-        const { scrollTop } = position
-        this._store.setScroll({ x: 0, y: scrollTop })
+        this._store.setScroll(position)
         // 重新绘制
         this.redraw()
         // 设置滚动条位置
-        this.getPlugin('ScrollPlugin').update({ x: 0, y: scrollTop })
+        this.getPlugin('ScrollPlugin').update()
+    }
+    _resize(){
+        this._store.setSize()
+        this.redraw()
     }
 }

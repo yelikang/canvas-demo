@@ -25,7 +25,8 @@ export default class ScrollPlugin extends Plugin {
                     }
                 },
                 methods: {
-                    $_onScrollY: debounce(this._scrollY.bind(this))
+                    $_onScrollY: debounce(this._scrollY.bind(this)),
+                    $_onScrollX: debounce(this._scrollX.bind(this))
                 }
             })
 
@@ -34,10 +35,24 @@ export default class ScrollPlugin extends Plugin {
     }
     _scrollY(_event: Event) {
         const target = _event.target as HTMLElement
-        const { scrollTop, scrollLeft } = target
-        this.eventBus.emit(CustomEvent.SCROLLBAR, { scrollTop, scrollLeft })
+        const { scrollTop } = target
+        this.eventBus.emit(CustomEvent.SCROLLBAR, {
+            y: scrollTop
+        })
     }
-    update(_pos: any) {
-        this._vm.scroll = _pos
+    _scrollX(_event: Event) {
+        const target = _event.target as HTMLElement
+        const { scrollLeft } = target
+        this.eventBus.emit(CustomEvent.SCROLLBAR, {
+            x: scrollLeft
+        })
+    }
+    update() {
+        const { x, y } = this.scrollSize
+
+        this._vm.scroll = {
+            x,
+            y
+        }
     }
 }

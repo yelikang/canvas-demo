@@ -38,14 +38,25 @@ export default class Plugin {
     get fullSize() {
         return this._context.store.getFullSize()
     }
+    /**
+     * 获取滚动条尺寸
+     */
+    get scrollSize(){
+        return this._context.store.getScroll()
+    }
 
     get eventBus() {
         return this._context.event
     }
+
+   
     apply() {
         throw Error(`Abstract method apply. Must be overridden.`)
     }
-    update(any) {
+    update() {
         throw Error(`Abstract method update. Must be overridden.`)
+    }
+    destroy(){
+        throw Error(`Abstract method destroy. Must be overridden.`)
     }
 }

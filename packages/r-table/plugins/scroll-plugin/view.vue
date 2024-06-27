@@ -1,7 +1,12 @@
 <template>
     <div class="r-table__scrollbar">
-        <div class="r-table__scrollbar__x">
-            <div></div>
+        <div
+            class="r-table__scrollbar__x"
+            :style="{ height: width + 'px', right: width + 'px' }"
+            @scroll="$_onScrollX"
+            ref="scrollX"
+        >
+            <div :style="{ width: fullWidth + 'px' }"></div>
         </div>
         <div
             class="r-table__scrollbar__y"
@@ -15,7 +20,6 @@
 </template>
 
 <script>
-import { watch } from 'vue'
 export default {
     props: {
         width: {
@@ -40,9 +44,10 @@ export default {
             }
         }
     },
-    watch:{
-        scroll:{
-            handler(newVal){
+    watch: {
+        scroll: {
+            handler(newVal) {
+                this.$refs.scrollX.scrollLeft = newVal.x
                 this.$refs.scrollY.scrollTop = newVal.y
             }
         }
@@ -59,6 +64,36 @@ export default {
         width: 100%;
         height: 100%;
         pointer-events: none;
+
+        &__x {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            pointer-events: auto;
+            > div {
+                width: inherit;
+            }
+
+            &::-webkit-scrollbar {
+                /*滚动条整体样式*/
+                width: 0; /*高宽分别对应横竖滚动条的尺寸*/
+                height: 10px;
+            }
+            &::-webkit-scrollbar-thumb {
+                /*滚动条里面小方块*/
+                border-radius: 10px;
+                background-color: skyblue;
+            }
+            &::-webkit-scrollbar-track {
+                /*滚动条里面轨道*/
+                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                background: #ededed;
+                border-radius: 10px;
+            }
+        }
+
         &__y {
             position: absolute;
             right: 0;

@@ -40,11 +40,16 @@ export default class Store {
         const { containerEl } = this._options
         this._containerEl = containerEl
         this._containerEl.style.position = 'relative'
-        const { clientWidth, clientHeight } = containerEl
-        this.setSize({ width: clientWidth, height: clientHeight })
+        this.setSize()
         this._containerEl.appendChild(this._canvas.element)
     }
-    setSize({ width, height }) {
+    setSize() {
+        // 先清空canvas的宽高，不然containerEl会被撑开
+        this._canvas.setSize({ width:0, height:0 })
+
+        let width = this._containerEl.clientWidth
+        let height = this._containerEl.clientHeight
+
         const { scrollbarWidth } = this._options
         // 减去滚动条尺寸
         width = width - scrollbarWidth
@@ -65,7 +70,10 @@ export default class Store {
 
         // 实际整体宽高
         this._fullSize = {
-            width: 0,
+            width:
+                this._options.columns?.reduce((acc, col: any) => {
+                    return col?.width + acc
+                }, 0) || 0,
             // 数据高度 + 头部高度
             height: this._datas.length * defaultRowHeight + defaultRowHeight
         }
@@ -74,7 +82,12 @@ export default class Store {
      * 设置滚动条信息
      */
     setScroll(_scroll: { x: number; y: number }) {
-        this._scroll = _scroll
+        if (_scroll.x !== undefined) {
+            this._scroll.x = _scroll.x
+        }
+        if (_scroll.y !== undefined) {
+            this._scroll.y = _scroll.y
+        }
     }
     getData() {
         // return this._datas
@@ -90,12 +103,15 @@ export default class Store {
     getContainerEl() {
         return this._containerEl
     }
-    getViewSize(){
+    getViewSize() {
         return this._viewSize
     }
 
     getFullSize() {
         return this._fullSize
+    }
+    getScroll() {
+        return this._scroll
     }
     // 获取可视区域数据(滚动加载)
     _getViewData() {
@@ -106,6 +122,10 @@ export default class Store {
         const endRow = Math.ceil((this._scroll.y + height) / defaultRowHeight)
 
         const viewData = this._datas.slice(startRow, endRow)
+        // 标识行实际索引
+        viewData.forEach((row, index) => {
+            row.rowIndex = startRow + index
+        })
 
         return viewData
     }

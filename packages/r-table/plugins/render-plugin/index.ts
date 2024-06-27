@@ -41,6 +41,8 @@ export default class RenderPlugin extends Plugin {
         // 列头
         const columns = this.columns
 
+        const scrollSize = this.scrollSize
+
         const options = this.options
         const { defaultRowHeight, defaultCellWidth } = options
         datas.forEach((row, rowIndex) => {
@@ -50,8 +52,9 @@ export default class RenderPlugin extends Plugin {
                 const val = row[key] || ''
 
                 // 计算单元格起始位置
-                const cellX = totolWidth
-                const cellY = (rowIndex + 1) * defaultRowHeight
+                const cellX = totolWidth - scrollSize.x
+                // 行理论上的高度位置 + 表头高度 - 减去滚动距离
+                const cellY = (row.rowIndex ) * defaultRowHeight + defaultRowHeight - scrollSize.y
 
                 // 列宽(根据用户传入的列宽信息、剩余列自适应计算列宽)
                 // 1.自适应(内容自适应) + 默认列宽
@@ -100,6 +103,11 @@ export default class RenderPlugin extends Plugin {
         const canvas: Canvas = this.canvas
 
         let { x, y, width, height, text } = _cell
+
+        // 背景填充为白色
+        canvas.fillStyle = '#fff'
+        canvas.fillRect(x,y, width, height)
+
         // 下边框
         const startPoint = {
             x,

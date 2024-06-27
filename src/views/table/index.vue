@@ -27,6 +27,11 @@ export default {
                     title: '工作',
                     key: 'worker',
                     width: '200'
+                },
+                {
+                    title: '备注',
+                    key: 'remark',
+                    width: '200'
                 }
             ]
         })
@@ -37,13 +42,13 @@ export default {
                 records.push({
                     name: `张三${i}`,
                     age: i,
-                    worker: `coder ${i}`
+                    worker: `coder ${i}`,
+                    remark: `备注${i}`
                 })
             }
             return records
         }
-        const array = generateRecords(20)
-
+        const array = generateRecords(200)
         rTable.setData(array)
     }
 }
@@ -55,8 +60,7 @@ export default {
     height: 100%;
     padding: 10px 20px;
     &__container {
-        height: 280px;
-        width: 500px;
+        height: 100%;
     }
 }
 </style>
