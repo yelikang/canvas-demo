@@ -1,11 +1,9 @@
 import Plugin from '..'
 import Vue from 'vue'
 import View from './view.vue'
-import { CustomEvent } from '../../event'
-import { debounce } from 'lodash-es'
 
-// 表格滚动插件
-export default class ScrollPlugin extends Plugin {
+// 列选中插件
+export default class ColSelectPlugin extends Plugin {
     _vm: any
     override apply() {
         if (!this._vm) {
@@ -19,20 +17,11 @@ export default class ScrollPlugin extends Plugin {
                     fullHeight: height
                 }
             })
-            // 添加元素撑开滚动条
             this.mainEl.appendChild(this._vm.$el)
-
-            this._scroll = debounce(this._scroll.bind(this))
-            this.mainEl.addEventListener('scroll', this._scroll)
         }
     }
     _scroll(_event: Event) {
-        const target = _event.target as HTMLElement
-        const { scrollTop, scrollLeft } = target
-        this.eventBus.emit(CustomEvent.SCROLLBAR, {
-            y: scrollTop,
-            x: scrollLeft
-        })
+      
     }
 
     update() {}

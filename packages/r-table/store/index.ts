@@ -11,7 +11,7 @@ const defaultOptions = {
     borderColor: '#dfdfdf',
     // 单元格宽度
     defaultCellWidth: 80,
-    paddingWidth:5
+    paddingWidth: 5
 }
 
 export default class Store {
@@ -31,6 +31,8 @@ export default class Store {
     }
     // canvas包裹元素
     _containerEl: HTMLElement
+    // 操作主元素
+    _mainEl: HTMLElement
     // 滚动数据
     _scroll = { x: 0, y: 0 }
     constructor(_options: RTableOption) {
@@ -43,14 +45,19 @@ export default class Store {
 
         this.setSize()
         this._containerEl.appendChild(this._canvas.element)
+
+        // 创建表格主元素，挂载
+        const rtableMainEl = document.createElement('div')
+        this._mainEl = rtableMainEl
+        rtableMainEl.className = 'r-table__main'
+        this._containerEl.appendChild(rtableMainEl)
     }
     setSize() {
         // 先清空canvas的宽高，不然containerEl会被撑开
-        this._canvas.setSize({ width:0, height:0 })
+        this._canvas.setSize({ width: 0, height: 0 })
 
         let width = this._containerEl.clientWidth
         let height = this._containerEl.clientHeight
-
 
         this._viewSize = {
             width,
@@ -94,11 +101,11 @@ export default class Store {
         return this._options.columns
     }
     /**
-     * 获取当前表格的包裹元素
+     * 获取当前表格操作元素
      * @returns
      */
-    getContainerEl() {
-        return this._containerEl
+    getMainEl() {
+        return this._mainEl
     }
     getViewSize() {
         return this._viewSize

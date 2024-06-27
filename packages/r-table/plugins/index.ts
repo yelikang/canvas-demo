@@ -21,10 +21,10 @@ export default class Plugin {
         return this._context.store.getColumns()
     }
     /**
-     * 获取当前表格包裹元素
+     * 获取当前表格操作元素
      */
-    get containerEl() {
-        return this._context.store.getContainerEl()
+    get mainEl() {
+        return this._context.store.getMainEl()
     }
     /**
      * 获取可视区域高度

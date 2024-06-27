@@ -7,7 +7,8 @@ import { PluginContext, RTableOption } from './type'
 import RTableEvent, { CustomEvent } from './event'
 import { noop } from './shared/utils'
 import ResizePlugin from './plugins/resize-plugin'
-
+import './style/index.less'
+import ColSelectPlugin from './plugins/col-select-plugin'
 export default class RTable {
     _containerEl: HTMLElement
     _store: Store
@@ -34,6 +35,7 @@ export default class RTable {
         this.registerPlugin(RenderPlugin)
         this.registerPlugin(ScrollPlugin)
         this.registerPlugin(ResizePlugin)
+        this.registerPlugin(ColSelectPlugin)
     }
 
     registerPlugin(_PluginCtor: any) {
