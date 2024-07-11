@@ -147,3 +147,16 @@ export default class RenderPlugin extends Plugin {
         canvas.fillText(text, x + paddingWidth, y + height / 2 + paddingWidth)
     }
 }
+
+
+// 通用方法混入
+// mixin(RenderPlugin, mixinMethods)
+
+function mixin(source:any, target){
+    for(let key in target){
+        if(target.hasOwnProperty(key)){
+            source[key] = target[key]
+        }
+    }
+    return source
+}

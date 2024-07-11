@@ -1,4 +1,4 @@
-import Plugin from '..'
+import Plugin from '../../../r-table/plugins'
 import Vue from 'vue'
 import View from './view.vue'
 

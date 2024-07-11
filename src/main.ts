@@ -10,3 +10,15 @@ new Vue({
     router,
     render: (h) => h(App)
 }).$mount('#app')
+
+class Test {
+    @formula('coder')
+    private name: string
+}
+
+function formula(_str) {
+    return (_target) => {
+        
+        '123'
+}
+}

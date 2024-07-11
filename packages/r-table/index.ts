@@ -8,7 +8,6 @@ import RTableEvent, { CustomEvent } from './event'
 import { noop } from './shared/utils'
 import ResizePlugin from './plugins/resize-plugin'
 import './style/index.less'
-import ColSelectPlugin from './plugins/col-select-plugin'
 export default class RTable {
     _containerEl: HTMLElement
     _store: Store
@@ -31,11 +30,10 @@ export default class RTable {
         this.getPlugin('RenderPlugin').apply()
     }
     _initPlugin() {
-        // TODO: 根据不同的生命周期注册不同的插件(或者不同插件注册不同声明周期事件)
+        // TODO: 根据不同的生命周期注册不同的插件(或者不同插件注册不同生命周期事件)
         this.registerPlugin(RenderPlugin)
         this.registerPlugin(ScrollPlugin)
         this.registerPlugin(ResizePlugin)
-        this.registerPlugin(ColSelectPlugin)
     }
 
     registerPlugin(_PluginCtor: any) {
