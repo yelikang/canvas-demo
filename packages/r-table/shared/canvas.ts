@@ -61,7 +61,7 @@ export default class Canvas {
     measureText(text: string, font: string = '14px Arial'): number {
         if (this.context) {
             this.context?.save()
-            this.context.font = font
+            this.font = font
             const width = this.context.measureText(text).width || 0
             this.context.restore()
             return width
@@ -75,8 +75,27 @@ export default class Canvas {
      * @param width
      * @param height
      */
-    fillRect(x, y, width, height) {
+    fillRect(x, y, width, height, color?: string) {
+        if (color) {
+            this.context?.save()
+            this.fillStyle = color
+        }
         this.context?.fillRect(x, y, width, height)
+
+        if (color) {
+            this.context?.restore()
+        }
+    }
+    /**
+     * 绘制文字
+     * @param text
+     * @param x
+     * @param y
+     */
+    fillText(text: string, x: number, y: number) {
+        if (this.context) {
+            this.context.fillText(text, x, y)
+        }
     }
 
     /**
@@ -109,17 +128,7 @@ export default class Canvas {
             this.context.closePath()
         }
     }
-    /**
-     * 绘制文字
-     * @param text
-     * @param x
-     * @param y
-     */
-    fillText(text: string, x: number, y: number) {
-        if (this.context) {
-            this.context.fillText(text, x, y)
-        }
-    }
+
     /**
      * 清空画布
      */

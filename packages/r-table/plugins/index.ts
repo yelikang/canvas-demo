@@ -49,6 +49,11 @@ export default class Plugin {
         return this._context.event
     }
 
+
+    get currRow(){
+        return this._context.store.getCurrRow()
+    }
+
    
     apply() {
         throw Error(`Abstract method apply. Must be overridden.`)

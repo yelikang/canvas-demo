@@ -16,8 +16,7 @@ export default {
             columns: [
                 {
                     title: '姓名姓名姓名姓名姓名姓名6',
-                    key: 'name',
-                    width: 'auto'
+                    key: 'name'
                 },
                 {
                     title: '年龄',
@@ -31,7 +30,6 @@ export default {
                 {
                     title: '备注',
                     key: 'remark',
-                    width: 'auto'
                 }
             ]
         })

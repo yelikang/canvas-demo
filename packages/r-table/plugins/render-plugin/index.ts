@@ -44,11 +44,14 @@ export default class RenderPlugin extends Plugin {
         const scrollSize = this.scrollSize
 
         const options = this.options
-        const { defaultRowHeight, defaultCellWidth } = options
+        const { defaultRowHeight, defaultCellWidth, bg, highlightBg} = options
+
+        const currRow = this.currRow
+
         datas.forEach((row, rowIndex) => {
             let totolWidth = 0
             columns?.forEach((column, colIndex) => {
-                const { key, width, title } = column
+                const { key, computeWidth, title } = column
                 const val = row[key] || ''
 
                 // 计算单元格起始位置
@@ -66,7 +69,7 @@ export default class RenderPlugin extends Plugin {
                 // b. 传入宽度，设置最小宽度，计算剩余列宽
                 // c. 根据文字内容，计算宽度
                 // d. 超出显示...，不换行
-                const colWidth = width || defaultCellWidth
+                const colWidth = computeWidth || defaultCellWidth
 
                 totolWidth = totolWidth + colWidth
 
@@ -77,7 +80,8 @@ export default class RenderPlugin extends Plugin {
                     width: colWidth,
                     // 行高
                     height: defaultRowHeight,
-                    text: val
+                    text: val,
+                    bgColor: currRow === rowIndex ? highlightBg : bg
                 }
                 bodyCells.push(cell)
 
@@ -89,7 +93,8 @@ export default class RenderPlugin extends Plugin {
                         width: colWidth,
                         // 行高
                         height: defaultRowHeight,
-                        text: title
+                        text: title,
+                        bgColor: bg
                     }
                     headerCells.push(cell)
                 }
@@ -106,11 +111,10 @@ export default class RenderPlugin extends Plugin {
         const { paddingWidth } = this.options
         const canvas: Canvas = this.canvas
 
-        let { x, y, width, height, text } = _cell
+        let { x, y, width, height, text, bgColor } = _cell
 
         // 背景填充为白色
-        canvas.fillStyle = '#fff'
-        canvas.fillRect(x, y, width, height)
+        canvas.fillRect(x, y, width, height, bgColor)
 
         // 下边框
         const startPoint = {
@@ -146,17 +150,4 @@ export default class RenderPlugin extends Plugin {
 
         canvas.fillText(text, x + paddingWidth, y + height / 2 + paddingWidth)
     }
-}
-
-
-// 通用方法混入
-// mixin(RenderPlugin, mixinMethods)
-
-function mixin(source:any, target){
-    for(let key in target){
-        if(target.hasOwnProperty(key)){
-            source[key] = target[key]
-        }
-    }
-    return source
 }

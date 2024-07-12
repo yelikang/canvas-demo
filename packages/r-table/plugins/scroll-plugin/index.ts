@@ -2,7 +2,7 @@ import Plugin from '..'
 import Vue from 'vue'
 import View from './view.vue'
 import { CustomEvent } from '../../event'
-import { debounce } from 'lodash-es'
+import { throttle } from 'lodash-es'
 
 // 表格滚动插件
 export default class ScrollPlugin extends Plugin {
@@ -22,7 +22,7 @@ export default class ScrollPlugin extends Plugin {
             // 添加元素撑开滚动条
             this.mainEl.appendChild(this._vm.$el)
 
-            this._scroll = debounce(this._scroll.bind(this))
+            this._scroll = throttle(this._scroll.bind(this))
             this.mainEl.addEventListener('scroll', this._scroll)
         }
     }
@@ -35,5 +35,9 @@ export default class ScrollPlugin extends Plugin {
         })
     }
 
-    update() {}
+    override update() {
+        const { width, height } = this.fullSize
+        this._vm.fullWidth = width
+        this._vm.fullHeight = height
+    }
 }

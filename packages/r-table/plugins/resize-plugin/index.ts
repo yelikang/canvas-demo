@@ -1,5 +1,6 @@
 import Plugin from '..'
 import { CustomEvent } from '../../event'
+import {debounce} from 'lodash-es'
 
 // 尺寸变更插件
 export default class ResizePlugin extends Plugin {
@@ -8,8 +9,8 @@ export default class ResizePlugin extends Plugin {
         // this._resizeObserver = new ResizeObserver(this._resize.bind(this))
         // this._resizeObserver.observe(this.containerEl)
 
-        this._resize = this._resize.bind(this)
-        window.addEventListener('resize', this._resize.bind(this))
+        this._resize = debounce(this._resize.bind(this), 100)
+        window.addEventListener('resize', this._resize)
     }
     _resize(_event: any) {
         this.eventBus.emit(CustomEvent.RESIZE)

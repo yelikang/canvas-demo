@@ -5,6 +5,7 @@ import Store from './store'
 type RTableOption = {
     containerEl: HTMLCanvasElement // 渲染在哪个元素中
     bg: string // 背景色
+    highlightBg: string // 高亮背景色
     headerBg: string // 表头背景色
     defaultRowHeight: number // 行高
     borderColor: string
@@ -31,4 +32,5 @@ type Cell = {
     width: number // 宽度
     height: number // 高度
     text: string // 文字
+    bgColor?: string // 背景色
 }
