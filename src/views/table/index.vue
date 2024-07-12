@@ -46,7 +46,7 @@ export default {
             }
             return records
         }
-        const array = generateRecords(2000)
+        const array = generateRecords(900000)
         this.rTable.setData(array)
     },
     destroyed() {

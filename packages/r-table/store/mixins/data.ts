@@ -11,6 +11,11 @@ export default {
 
         const endRow = Math.ceil((this._scroll.y + height) / defaultRowHeight)
 
+        console.log('===', this._scroll.y,this._scroll.y + height, this._fullSize.height)
+
+        // div元素的最大高度在33554400px左右，数据大概超过80w，滚动条就到底了；但是下面还有数据
+        // 超过这个宽度/高度，会被默认切掉。
+
         const viewData = this._datas.slice(startRow, endRow)
         // 标识行实际索引
         viewData.forEach((row, index) => {
