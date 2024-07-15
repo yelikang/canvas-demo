@@ -92,8 +92,15 @@ export default class ColResizePlugin extends Plugin {
 
                 // 2.记录列宽度，鼠标释放时绘制最新宽度
                 this._dragEnd = offsetX
-
+                // 3.拖拽元素，撑开滚动条
                 this._resizeEl.style.left = offsetX +'px'
+
+                // if(offsetX > this.mainEl.getBoundingClientRect().right - 50){
+                //     this.mainEl.scrollLeft +=10
+                // }else if(offsetX- parentScrollX < this.mainEl.getBoundingClientRect().left){
+                //     this.mainEl.scrollLeft -=10
+                // }
+
             }
         }
     }
@@ -117,6 +124,8 @@ export default class ColResizePlugin extends Plugin {
 
             this.eventBus.emit(CustomEvent.COLRESIZE, -1, true)
         }
+        this._resizeEl.style.left = 0 +'px'
+
     }
 
     destroy() {}
