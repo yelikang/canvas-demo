@@ -40,6 +40,8 @@ export default class ColResizePlugin extends Plugin {
     _dragStart = 0
     // 结束拖拽位置
     _dragEnd = 0
+
+    _resizeEl:HTMLDivElement
     override apply() {
         this._mouseDown = this._mouseDown.bind(this)
         this._mouseMove = throttle(this._mouseMove.bind(this))
@@ -47,6 +49,10 @@ export default class ColResizePlugin extends Plugin {
         this.mainEl.addEventListener('mousedown', this._mouseDown)
         document.body.addEventListener('mousemove', this._mouseMove)
         document.body.addEventListener('mouseup', this._mouseUp)
+
+        this._resizeEl = document.createElement('div')
+        this._resizeEl.className = 'r-table__main__col-resize'
+        this.mainEl.appendChild(this._resizeEl)
     }
     _mouseDown(_event: MouseEvent) {
         const { colIndex, minX } = ifOnColumnBorder(
@@ -86,6 +92,8 @@ export default class ColResizePlugin extends Plugin {
 
                 // 2.记录列宽度，鼠标释放时绘制最新宽度
                 this._dragEnd = offsetX
+
+                this._resizeEl.style.left = offsetX +'px'
             }
         }
     }

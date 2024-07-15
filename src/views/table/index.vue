@@ -57,7 +57,7 @@ export default {
 
 <style lang="less" scoped>
 .RTable {
-    width: 100%;
+    width: 500px;
     height: 100%;
     padding: 10px 20px;
     &__container {
