@@ -12,6 +12,7 @@ type RTableOption = {
     columns?: [] // 列信息
     defaultCellWidth: number // 单元格宽度
     paddingWidth:number // 文字左右间距
+    dragColor:string // 拖拽线的颜色
 }
 
 type Point = {

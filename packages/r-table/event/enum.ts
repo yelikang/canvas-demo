@@ -4,5 +4,7 @@ export enum CustomEvent {
     // 尺寸变更
     RESIZE = 'resize',
     // 选中行
-    ROWSELECT = 'row_select'
+    ROWSELECT = 'row_select',
+    // 列宽调整
+    COLRESIZE = 'col_resize'
 }

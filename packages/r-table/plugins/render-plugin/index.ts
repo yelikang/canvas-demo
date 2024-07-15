@@ -27,6 +27,8 @@ export default class RenderPlugin extends Plugin {
             headerCells.forEach((cell) => {
                 this._renderCell(cell)
             })
+
+            this._drawResizeLine()
         }
     }
     /**
@@ -44,7 +46,7 @@ export default class RenderPlugin extends Plugin {
         const scrollSize = this.scrollSize
 
         const options = this.options
-        const { defaultRowHeight, defaultCellWidth, bg, highlightBg} = options
+        const { defaultRowHeight, defaultCellWidth, bg, highlightBg } = options
 
         const currRow = this.currRow
 
@@ -149,5 +151,27 @@ export default class RenderPlugin extends Plugin {
         text = canvas.text2Ellipsis('' + text, width - paddingWidth * 2)
 
         canvas.fillText(text, x + paddingWidth, y + height / 2 + paddingWidth)
+    }
+
+    /**
+     *  绘制列宽拖拽线
+     */
+    private _drawResizeLine() {
+        const resizeLineX = this.resizeLineX
+
+        const startPoint = {
+            x: resizeLineX,
+            y: 0
+        }
+
+        const endPoint = {
+            x: resizeLineX,
+            y: this.viewSize.height
+        }
+        const {dragColor} = this.options
+        const canvas: Canvas = this.canvas
+        canvas.strokeStyle = dragColor
+
+        canvas.renderVerLine(startPoint, endPoint)
     }
 }

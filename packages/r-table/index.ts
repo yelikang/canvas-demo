@@ -9,6 +9,7 @@ import { PluginContext, RTableOption } from './type'
 import RTableEvent, { CustomEvent } from './event'
 import { noop } from './shared/utils'
 import './style/index.less'
+import ColResizePlugin from './plugins/col-resize-plugin'
 export default class RTable {
     _containerEl: HTMLElement
     _store: Store
@@ -19,10 +20,12 @@ export default class RTable {
         this._scrollBar = this._scrollBar.bind(this)
         this._resize = this._resize.bind(this)
         this._selectRow = this._selectRow.bind(this)
+        this._colResize = this._colResize.bind(this)
 
         this._event.on(CustomEvent.SCROLLBAR, this._scrollBar)
         this._event.on(CustomEvent.RESIZE, this._resize)
         this._event.on(CustomEvent.ROWSELECT, this._selectRow)
+        this._event.on(CustomEvent.COLRESIZE, this._colResize)
     }
     setData(_data: Array<any>) {
         this._store.setData(_data)
@@ -57,6 +60,7 @@ export default class RTable {
         this.registerPlugin(ScrollPlugin)
         this.registerPlugin(ResizePlugin)
         this.registerPlugin(RowSelectPlugin)
+        this.registerPlugin(ColResizePlugin)
     }
     _scrollBar(position) {
         this._store.setScroll(position)
@@ -68,8 +72,21 @@ export default class RTable {
         this.redraw()
         this.getPlugin('ScrollPlugin').update()
     }
-    _selectRow(_row:number){
+    _selectRow(_row: number) {
         this._store.setCurrentRow(_row)
+        this.redraw()
+    }
+    /**
+     * 列宽调整
+     */
+    _colResize(_positionX, _needComputeColumn = false) {
+        // 重新计算画布尺寸、列宽
+        if (_needComputeColumn) {
+            this._store.setSize()
+            // 重新计算画布尺寸
+            this.getPlugin('ScrollPlugin').update()
+        }
+        this._store.setResizeLine(_positionX)
         this.redraw()
     }
 }

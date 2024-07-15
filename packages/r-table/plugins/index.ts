@@ -1,6 +1,4 @@
 import { PluginContext } from '../type'
-import RenderPlugin from './render-plugin'
-import ScrollPlugin from './scroll-plugin'
 
 export default class Plugin {
     constructor(private _context: PluginContext) {
@@ -52,6 +50,10 @@ export default class Plugin {
 
     get currRow(){
         return this._context.store.getCurrRow()
+    }
+
+    get resizeLineX(){
+        return this._context.store.getResizeLine()
     }
 
    

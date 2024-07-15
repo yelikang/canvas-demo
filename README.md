@@ -10,7 +10,7 @@
  unset: 未设置宽度，采用剩余宽度平均分配
 ~~~
 - 滚动加载(外部滚动条、还是绘制滚动条) 使用div遮盖、原生滚动 √ 
-- 拖拽宽度 col-resize-plugin
+- 拖拽宽度 col-resize-plugin √ 
 - 行选中样式、文字复制选择
 - 列排序(单选/多选)     col-draw-plugin
 - 大数据量缓存+动态计算、canvas离屏渲染

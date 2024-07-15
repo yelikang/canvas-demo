@@ -14,7 +14,8 @@ const defaultOptions = {
     borderColor: '#dfdfdf',
     // 单元格宽度
     defaultCellWidth: 80,
-    paddingWidth: 5
+    paddingWidth: 5,
+    dragColor:'green'
 }
 
 @mixinDecorator([Width, Data])
@@ -22,7 +23,6 @@ export default class Store {
     // 索引签名
     [key: string]: any
     _datas: Array<any> = []
-    _columns: Array<any> = []
     _options: RTableOption
     _canvas = new Canvas()
     // 可视区域宽高
@@ -43,6 +43,8 @@ export default class Store {
     _scroll = { x: 0, y: 0 }
     // 当前选中行
     _currRow: number
+    // 列宽拖拽线位置
+    _resizeLineX:number
     constructor(_options: RTableOption) {
         this._options = Object.assign({}, defaultOptions, _options)
 
@@ -91,6 +93,13 @@ export default class Store {
     setCurrentRow(_row: number) {
         this._currRow = _row
     }
+    /**
+     * 设置列宽拖拽线位置
+     */
+    setResizeLine(_resizeLineX:number) {
+        // 绘制竖线
+        this._resizeLineX = _resizeLineX
+    }
     getData() {
         // return this._datas
         return this._getViewData()
@@ -124,5 +133,8 @@ export default class Store {
     }
     getCanvas(): Canvas {
         return this._canvas
+    }
+    getResizeLine():number{
+        return this._resizeLineX
     }
 }
